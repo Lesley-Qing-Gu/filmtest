@@ -114,7 +114,7 @@ const Navbar = ({ onNavigate, activePath }: { onNavigate: (path: string) => void
         onClick={() => onNavigate('home')}
       >
         <div className="w-10 h-10 rounded-full overflow-hidden">
-          <img src="/logo.jpg" alt="CineRound" className="w-full h-full object-cover" />
+          <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="CineRound" className="w-full h-full object-cover" />
         </div>
         <span className="text-2xl font-black tracking-tighter text-[#E70012] brutalist-font uppercase"></span>
       </div>
@@ -672,7 +672,7 @@ const ContactSection = () => (
   <section className="pt-32 pb-32 px-6 md:px-20 text-center bg-white">
     <div className="max-w-4xl mx-auto space-y-12">
       <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-8">
-        <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+        <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="Logo" className="w-full h-full object-cover" />
       </div>
       <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-[#E70012] brutalist-font">联系我们</h2>
       <p className="text-xl md:text-2xl text-[#E70012]/70 font-bold max-w-2xl mx-auto">
@@ -694,7 +694,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: string) => void }) => (
       <div className="space-y-8 max-w-lg">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full overflow-hidden">
-            <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+            <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="Logo" className="w-full h-full object-cover" />
           </div>
           <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none brutalist-font">
             CINEROUND
