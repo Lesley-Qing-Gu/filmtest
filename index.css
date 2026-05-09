@@ -1,0 +1,28 @@
+body {
+    font-family: 'Outfit', sans-serif;
+    cursor: default;
+}
+h1, h2, h3, .brutalist-font {
+    font-family: 'Bricolage Grotesque', sans-serif;
+}
+.grainy-bg {
+    background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background: #FFFFFF;
+}
+::-webkit-scrollbar-thumb {
+    background: #E70012;
+    border: 3px solid #FFFFFF;
+    border-radius: 10px;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

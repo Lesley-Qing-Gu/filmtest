@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# CineRound | 银幕之外
 
-# Run and deploy your AI Studio app
+一个致力于影评、电影节报道与深度访谈的电影评论平台。
 
-This contains everything you need to run your app locally.
+## 在线预览
 
-View your app in AI Studio: https://ai.studio/apps/22b456ca-492d-44d1-b2ac-b7dd92d8cfe7
+🔗 https://p1ge0n8.github.io/repo_test/
 
-## Run Locally
+## 功能
 
-**Prerequisites:**  Node.js
+- 最新资讯 / 电影节报道 / 深度文章 / 访谈
+- 文章详情页（支持 Markdown 渲染）
+- 管理后台（文章的增删改）
 
+## 技术栈
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Lucide Icons
+
+## 本地运行
+
+```bash
+npm install
+npm run dev
+```
+
+访问 http://localhost:3000
