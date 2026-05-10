@@ -39,70 +39,23 @@ interface Article {
 }
 
 // --- Data ---
-const INITIAL_ARTICLES: Article[] = [
-  {
-    id: 1,
-    title: "霓虹恶魔：十年之后",
-    author: "埃琳娜·罗西",
-    date: "2024.03.15",
-    summary: "重温雷弗恩那部极具争议的杰作及其对电影时尚的深远影响。",
-    imageUrl: "https://picsum.photos/seed/cinema1/800/1000",
-    category: 'texts',
-    rating: 4.5,
-    content: "# 霓虹恶魔：十年之后\n\n重温雷弗恩那部极具争议的杰作..."
-  },
-  {
-    id: 2,
-    title: "2024 戛纳电影节：早期热门",
-    author: "马库斯·索恩",
-    date: "2024.03.12",
-    summary: "从克鲁瓦塞特大道到银幕，我们关注今年最具话题性的影片。",
-    imageUrl: "https://picsum.photos/seed/festival/800/600",
-    category: 'festival',
-    content: "# 2024 戛纳电影节\n\n从克鲁瓦塞特大道到银幕..."
-  },
-  {
-    id: 3,
-    title: "访谈：声音的沉默",
-    author: "莎拉·詹金斯",
-    date: "2024.03.10",
-    summary: "与导演田中浩史深入探讨他最新的极简主义史诗。",
-    imageUrl: "https://picsum.photos/seed/interview/800/1200",
-    category: 'interview',
-    content: "# 访谈：田中浩史\n\n深入探讨..."
-  },
-  {
-    id: 4,
-    title: "流媒体战争：独立电影生存指南",
-    author: "大卫·陈",
-    date: "2024.03.05",
-    summary: "独立电影人如何应对数字发行格局的不断变化。",
-    imageUrl: "https://picsum.photos/seed/news/800/800",
-    category: 'news',
-    content: "# 流媒体战争\n\n独立电影人如何应对..."
-  },
-  {
-    id: 5,
-    title: "影评：沙丘 2",
-    author: "埃琳娜·罗西",
-    date: "2024.03.01",
-    summary: "维伦纽瓦呈现了一场终于能与赫伯特想象力相匹配的视觉盛宴。",
-    imageUrl: "https://picsum.photos/seed/dune/800/600",
-    category: 'texts',
-    rating: 5,
-    content: "# 影评：沙丘 2\n\n维伦纽瓦呈现了一场..."
-  },
-  {
-    id: 6,
-    title: "圣丹斯总结：值得关注的 10 部电影",
-    author: "马库斯·索恩",
-    date: "2024.02.25",
-    summary: "帕克城精华，从突破性的恐怖片到亲密的家庭剧。",
-    imageUrl: "https://picsum.photos/seed/sundance/800/600",
-    category: 'festival',
-    content: "# 圣丹斯总结\n\n帕克城精华..."
-  }
-];
+const INITIAL_ARTICLES: Article[] = [];
+
+const isDev = import.meta.env.DEV;
+
+async function loadArticles(): Promise<Article[]> {
+  const res = await fetch(import.meta.env.BASE_URL + 'articles.json');
+  return res.json();
+}
+
+async function saveArticles(articles: Article[]) {
+  if (!isDev) return;
+  await fetch('/api/articles', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(articles, null, 2)
+  });
+}
 
 // --- Components ---
 
@@ -738,6 +691,10 @@ const App: React.FC = () => {
   const [prevPath, setPrevPath] = useState('home');
 
   useEffect(() => {
+    loadArticles().then(setArticles);
+  }, []);
+
+  useEffect(() => {
     const onHashChange = () => {
       const hash = window.location.hash.replace('#', '') || 'home';
       setActivePath(hash);
@@ -764,15 +721,21 @@ const App: React.FC = () => {
   }, [activePath]);
 
   const handleAddArticle = (newArticle: Article) => {
-    setArticles([newArticle, ...articles]);
+    const updated = [newArticle, ...articles];
+    setArticles(updated);
+    saveArticles(updated);
   };
 
   const handleDeleteArticle = (id: number) => {
-    setArticles(articles.filter(a => a.id !== id));
+    const updated = articles.filter(a => a.id !== id);
+    setArticles(updated);
+    saveArticles(updated);
   };
 
   const handleUpdateArticle = (updatedArticle: Article) => {
-    setArticles(articles.map(a => a.id === updatedArticle.id ? updatedArticle : a));
+    const updated = articles.map(a => a.id === updatedArticle.id ? updatedArticle : a);
+    setArticles(updated);
+    saveArticles(updated);
   };
 
   return (
