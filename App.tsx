@@ -112,7 +112,7 @@ const Hero = () => {
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8">
             <p className="text-xl md:text-3xl text-[#E70012] font-bold leading-tight">
-              缴械不投降
+              隐姓不埋名字，缴械不投降
             </p>
             <p className="text-base text-[#E70012]/70 font-medium leading-relaxed">
               PaperBullet 是一个致力于严谨影评、电影节报道以及与塑造当代电影的创作者进行深度对话的平台。我们相信影像的力量能够挑战、启发并触动人心。

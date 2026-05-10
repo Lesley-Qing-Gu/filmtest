@@ -1,15 +1,5 @@
 [
   {
-    "title": "赫尔佐格破格补录今年戛纳主竞赛",
-    "category": "news",
-    "date": "2026-05-10",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/01/Werner_Herzog_Venice_Film_Festival_2009.jpg",
-    "summary": "https://upload.wikimedia.org/wikipedia/commons/0/01/Werner_Herzog_Venice_Film_Festival_2009.jpg",
-    "content": "https://upload.wikimedia.org/wikipedia/commons/0/01/Werner_Herzog_Venice_Film_Festival_2009.jpg",
-    "author": "Admin",
-    "id": 1778435290107
-  },
-  {
     "title": "戛纳电影节开幕在即",
     "category": "festival",
     "date": "2026-05-10",
@@ -18,76 +8,5 @@
     "content": "后天看电影",
     "author": "Admin",
     "id": 1778434894718
-  },
-  {
-    "title": "3333",
-    "category": "texts",
-    "date": "2026-05-10",
-    "imageUrl": "https://a.ltrbxd.com/resized/sm/upload/cu/cp/cr/2m/o0uOCDLZEwlForZ5Bf3IeBwlPLd-0-2000-0-3000-crop.jpg?v=371b64c948",
-    "summary": "333",
-    "content": "3333333",
-    "author": "Admin",
-    "id": 1778434629253
-  },
-  {
-    "title": "22222222222",
-    "category": "news",
-    "date": "2026-05-10",
-    "imageUrl": "https://a.ltrbxd.com/resized/film-poster/8/6/1/3/8613-level-five-0-2000-0-3000-crop.jpg?v=821dd1fdc2",
-    "summary": "22222",
-    "content": "2222",
-    "author": "Admin",
-    "id": 1778434410075
-  },
-  {
-    "title": "11111",
-    "category": "news",
-    "date": "2026-05-10",
-    "imageUrl": "https://a.ltrbxd.com/resized/film-poster/1/9/5/8/0/19580-i-am-curious-blue--0-2000-0-3000-crop.jpg?v=0a667bf463",
-    "summary": "11111111",
-    "content": "11111",
-    "author": "Admin",
-    "id": 1778433612558
-  },
-  {
-    "id": 1,
-    "title": "霓虹恶魔：十年之后",
-    "author": "埃琳娜·罗西",
-    "date": "2024.03.15",
-    "summary": "重温雷弗恩那部极具争议的杰作及其对电影时尚的深远影响。",
-    "imageUrl": "https://picsum.photos/seed/cinema1/800/1000",
-    "category": "texts",
-    "rating": 4.5,
-    "content": "# 霓虹恶魔：十年之后\n\n重温雷弗恩那部极具争议的杰作..."
-  },
-  {
-    "id": 2,
-    "title": "2024 戛纳电影节：早期热门",
-    "author": "马库斯·索恩",
-    "date": "2024.03.12",
-    "summary": "从克鲁瓦塞特大道到银幕，我们关注今年最具话题性的影片。",
-    "imageUrl": "https://picsum.photos/seed/festival/800/600",
-    "category": "festival",
-    "content": "# 2024 戛纳电影节\n\n从克鲁瓦塞特大道到银幕..."
-  },
-  {
-    "id": 3,
-    "title": "访谈：声音的沉默",
-    "author": "莎拉·詹金斯",
-    "date": "2024.03.10",
-    "summary": "与导演田中浩史深入探讨他最新的极简主义史诗。",
-    "imageUrl": "https://picsum.photos/seed/interview/800/1200",
-    "category": "interview",
-    "content": "# 访谈：田中浩史\n\n深入探讨..."
-  },
-  {
-    "id": 6,
-    "title": "圣丹斯总结：值得关注的 10 部电影",
-    "author": "马库斯·索恩",
-    "date": "2024.02.25",
-    "summary": "帕克城精华，从突破性的恐怖片到亲密的家庭剧。",
-    "imageUrl": "https://picsum.photos/seed/sundance/800/600",
-    "category": "festival",
-    "content": "# 圣丹斯总结\n\n帕克城精华..."
   }
 ]
