@@ -115,7 +115,7 @@ const Hero = () => {
               探索电影艺术的边界，记录光影流转中的思想火花。
             </p>
             <p className="text-base text-[#E70012]/70 font-medium leading-relaxed">
-              CineRound 是一个致力于严谨影评、电影节报道以及与塑造当代电影的创作者进行深度对话的平台。我们相信影像的力量能够挑战、启发并触动人心。
+              PaperBullet 是一个致力于严谨影评、电影节报道以及与塑造当代电影的创作者进行深度对话的平台。我们相信影像的力量能够挑战、启发并触动人心。
             </p>
           </div>
         </motion.div>
@@ -650,7 +650,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: string) => void }) => (
             <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="Logo" className="w-full h-full object-cover" />
           </div>
           <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none brutalist-font">
-            CINEROUND
+            PaperBullet
           </h2>
         </div>
 
@@ -664,11 +664,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: string) => void }) => (
               <li className="hover:underline cursor-pointer" onClick={() => onNavigate('contact')}>联系我们</li>
             </ul>
             <ul className="space-y-2 text-[#E70012]/60 text-xs font-medium">
-              <li>地址：北京市朝阳区建国路88号SOHO现代城 A座 12层</li>
-              <li>邮箱：hello@cineround.com</li>
-              <li>电话：+86 10 8888 6666</li>
-              <li>微信公众号：CineRound影评</li>
-              <li>微博：@CineRound银幕之外</li>
+              <li>微博：@锵稿</li>
             </ul>
           </div>
         </div>
