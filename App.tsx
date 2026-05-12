@@ -416,7 +416,7 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
     if (editorRef.current && !showSource) {
       editorRef.current.innerHTML = formData.content || '';
     }
-  }, [showSource, editingId]);
+  }, [showSource, editingId, isAdding]);
 
   const execCmd = (cmd: string, value?: string) => {
     document.execCommand(cmd, false, value);
