@@ -413,8 +413,9 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
   const editorRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    contentRef.current = formData.content || '';
     if (editorRef.current && !showSource) {
-      editorRef.current.innerHTML = formData.content || '';
+      editorRef.current.innerHTML = contentRef.current;
     }
   }, [showSource, editingId, isAdding]);
 
@@ -425,9 +426,11 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
 
   const syncEditor = () => {
     if (editorRef.current) {
-      setFormData(prev => ({...prev, content: editorRef.current!.innerHTML}));
+      contentRef.current = editorRef.current.innerHTML;
     }
   };
+
+  const contentRef = React.useRef(formData.content || '');
 
   const insertHtmlAtCursor = (html: string) => {
     const editor = editorRef.current;
@@ -439,16 +442,15 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    syncEditor();
+    const finalContent = showSource ? formData.content : contentRef.current;
+    const finalData = { ...formData, content: finalContent } as Article;
     if (editingId) {
-      onUpdate({ ...formData as Article, id: editingId });
+      onUpdate({ ...finalData, id: editingId });
       setEditingId(null);
       showToast('文章更新成功！');
     } else {
-      const newArticle: Article = {
-        ...formData as Article,
-        id: Date.now(),
-      };
-      onAdd(newArticle);
+      onAdd({ ...finalData, id: Date.now() });
       showToast('文章发布成功！');
     }
     setIsAdding(false);
@@ -632,7 +634,17 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                     <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">内容正文 / Content</label>
                     <button 
                       type="button"
-                      onClick={() => setShowSource(!showSource)}
+                      onClick={() => {
+                        if (!showSource) {
+                          // switching to source: sync editor content to formData
+                          syncEditor();
+                          setFormData(prev => ({...prev, content: contentRef.current}));
+                        } else {
+                          // switching to rich text: contentRef will be set by useEffect
+                          contentRef.current = formData.content || '';
+                        }
+                        setShowSource(!showSource);
+                      }}
                       className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
                     >
                       {showSource ? <Eye size={14} /> : <Edit3 size={14} />}
@@ -726,8 +738,9 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                       contentEditable
                       suppressContentEditableWarning
                       onInput={syncEditor}
+                      onBlur={syncEditor}
                       className="w-full p-8 rounded-2xl border-2 border-[#E70012]/20 focus:border-[#E70012] outline-none bg-white min-h-[300px] prose prose-red max-w-none prose-headings:text-[#E70012] prose-p:text-[#E70012]/80 cursor-text"
-                    />
+                    ></div>
                   )}
                 </div>
 
