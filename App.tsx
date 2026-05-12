@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import { 
   Instagram, 
   User, 
@@ -243,7 +244,7 @@ const ArticlePage = ({ article, onBack }: { article: Article, onBack: () => void
       </div>
 
       <div className="prose prose-red max-w-none prose-headings:text-[#E70012] prose-p:text-[#E70012]/80 prose-p:text-lg prose-p:leading-relaxed">
-        <ReactMarkdown>{article.content || article.summary}</ReactMarkdown>
+        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{article.content || article.summary}</ReactMarkdown>
       </div>
 
       <div className="mt-16 pt-8 border-t-2 border-[#E70012]/10">
@@ -409,6 +410,25 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
   const showToast = (message: string) => {
     setToast(message);
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const insertMarkdown = (before: string, after: string) => {
+    const textarea = document.getElementById('content-editor') as HTMLTextAreaElement | null;
+    if (!textarea) {
+      setFormData({...formData, content: (formData.content || '') + before + after});
+      return;
+    }
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = formData.content || '';
+    const selected = text.slice(start, end);
+    const newContent = text.slice(0, start) + before + selected + after + text.slice(end);
+    setFormData({...formData, content: newContent});
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = start + before.length;
+      textarea.selectionEnd = start + before.length + selected.length;
+    }, 0);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -604,38 +624,59 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">内容正文 / Content (Markdown)</label>
-                    <div className="flex items-center gap-4">
-                      <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline cursor-pointer">
-                        <Image size={14} />
-                        插入图片
+                    <button 
+                      type="button"
+                      onClick={() => setPreviewMode(!previewMode)}
+                      className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
+                    >
+                      {previewMode ? <Edit3 size={14} /> : <Eye size={14} />}
+                      {previewMode ? '编辑模式' : '预览模式'}
+                    </button>
+                  </div>
+
+                  {!previewMode && (
+                    <div className="flex flex-wrap items-center gap-1 p-3 rounded-2xl border-2 border-[#E70012]/20 bg-white">
+                      <button type="button" onClick={() => insertMarkdown('**', '**')} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="加粗">B</button>
+                      <button type="button" onClick={() => insertMarkdown('*', '*')} className="px-3 py-1.5 text-xs italic font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="斜体">I</button>
+                      <button type="button" onClick={() => insertMarkdown('~~', '~~')} className="px-3 py-1.5 text-xs line-through font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="删除线">S</button>
+                      <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                      <button type="button" onClick={() => insertMarkdown('# ', '')} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题1">H1</button>
+                      <button type="button" onClick={() => insertMarkdown('## ', '')} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题2">H2</button>
+                      <button type="button" onClick={() => insertMarkdown('### ', '')} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题3">H3</button>
+                      <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                      <button type="button" onClick={() => insertMarkdown('> ', '')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="引用">“”</button>
+                      <button type="button" onClick={() => insertMarkdown('\n---\n', '')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="分割线">—</button>
+                      <button type="button" onClick={() => insertMarkdown('[', '](url)')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="链接">🔗</button>
+                      <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                      <label className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg cursor-pointer" title="上传图片">
+                        🖼️ 上传
                         <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
                           const url = await uploadImage(file);
-                          setFormData({...formData, content: (formData.content || '') + `\n![${file.name}](${url})\n`});
-                          showToast('图片已插入正文！');
+                          const width = prompt('图片宽度(px，留空为100%)', '');
+                          const caption = prompt('图片备注(留空则不添加)', '');
+                          let imgTag = width ? `<img src="${url}" alt="${file.name}" width="${width}" />` : `![${file.name}](${url})`;
+                          if (caption) imgTag = `<figure>\n${imgTag}\n<figcaption style="text-align:center;font-size:12px;color:#999;margin-top:6px">${caption}</figcaption>\n</figure>`;
+                          setFormData({...formData, content: (formData.content || '') + '\n' + imgTag + '\n'});
+                          showToast('图片已插入！');
                         }} />
                       </label>
                       <button 
                         type="button"
                         onClick={() => setShowImageLib(!showImageLib)}
-                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
+                        className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg"
+                        title="图片库"
                       >
-                        <Copy size={14} />
-                        图片库
+                        🖼️ 图片库
                       </button>
-                      <button 
-                        type="button"
-                        onClick={() => setPreviewMode(!previewMode)}
-                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
-                      >
-                        {previewMode ? <Edit3 size={14} /> : <Eye size={14} />}
-                        {previewMode ? '编辑模式' : '预览模式'}
-                      </button>
+                      <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                      <button type="button" onClick={() => insertMarkdown('\n<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">\n<div>\n\n', '\n\n</div>\n<div>\n\n第二列内容\n\n</div>\n</div>\n')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="两列布局">2列</button>
+                      <button type="button" onClick={() => insertMarkdown('\n<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">\n<div>\n\n', '\n\n</div>\n<div>\n\n第二列内容\n\n</div>\n<div>\n\n第三列内容\n\n</div>\n</div>\n')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="三列布局">3列</button>
                     </div>
-                  </div>
+                  )}
 
-                  {showImageLib && (
+                  {showImageLib && !previewMode && (
                     <div className="p-4 rounded-2xl border-2 border-[#E70012]/20 bg-white">
                       <div className="flex justify-between items-center mb-3">
                         <span className="text-xs font-black uppercase tracking-widest text-[#E70012]">已上传图片 / Image Library</span>
@@ -647,8 +688,12 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                         <div className="grid grid-cols-4 md:grid-cols-6 gap-3 max-h-48 overflow-y-auto">
                           {imageLib.map(img => (
                             <div key={img.name} className="relative group cursor-pointer" onClick={() => {
-                              setFormData({...formData, content: (formData.content || '') + `\n![${img.name}](${img.url})\n`});
-                              showToast('图片已插入正文！');
+                              const width = prompt('图片宽度(px，留空为100%)', '');
+                              const caption = prompt('图片备注(留空则不添加)', '');
+                              let imgTag = width ? `<img src="${img.url}" alt="${img.name}" width="${width}" />` : `![${img.name}](${img.url})`;
+                              if (caption) imgTag = `<figure>\n${imgTag}\n<figcaption style="text-align:center;font-size:12px;color:#999;margin-top:6px">${caption}</figcaption>\n</figure>`;
+                              setFormData({...formData, content: (formData.content || '') + '\n' + imgTag + '\n'});
+                              showToast('图片已插入！');
                             }}>
                               <img src={img.url} alt={img.name} className="w-full aspect-square object-cover rounded-lg border-2 border-transparent group-hover:border-[#E70012] transition-all" />
                             </div>
@@ -660,10 +705,11 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                   
                   {previewMode ? (
                     <div className="w-full p-8 rounded-2xl border-2 border-[#E70012]/20 bg-white min-h-[300px] prose prose-red max-w-none prose-headings:text-[#E70012] prose-p:text-[#E70012]/80">
-                      <ReactMarkdown>{formData.content || '*暂无内容*'}</ReactMarkdown>
+                      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{formData.content || '*暂无内容*'}</ReactMarkdown>
                     </div>
                   ) : (
                     <textarea 
+                      id="content-editor"
                       rows={10}
                       placeholder="# 从这里开始你的故事..."
                       value={formData.content}
