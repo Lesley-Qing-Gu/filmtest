@@ -70,13 +70,18 @@ async function uploadImage(file: File): Promise<string> {
   formData.append('file', file);
   const res = await fetch('/api/upload', { method: 'POST', body: formData });
   const data = await res.json();
-  return data.url;
+  // 返回带 base 路径的 URL，确保开发和生产环境都能访问
+  return import.meta.env.BASE_URL + data.url.replace(/^\//, '');
 }
 
 async function listImages(): Promise<UploadedImage[]> {
   if (!isDev) return [];
   const res = await fetch('/api/images');
-  return res.json();
+  const images = await res.json();
+  return images.map((img: UploadedImage) => ({
+    ...img,
+    url: import.meta.env.BASE_URL + img.url.replace(/^\//, '')
+  }));
 }
 
 // --- Components ---
@@ -89,7 +94,7 @@ const Navbar = ({ onNavigate, activePath }: { onNavigate: (path: string) => void
         onClick={() => onNavigate('home')}
       >
         <div className="w-10 h-10 rounded-full overflow-hidden">
-          <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="CineRound" className="w-full h-full object-cover" />
+          <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="PaperBullet" className="w-full h-full object-cover" />
         </div>
         <span className="text-2xl font-black tracking-tighter text-[#E70012] brutalist-font uppercase"></span>
       </div>
@@ -764,7 +769,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: string) => void }) => (
               <li className="hover:underline cursor-pointer" onClick={() => onNavigate('contact')}>联系我们</li>
             </ul>
             <ul className="space-y-2 text-[#E70012]/60 text-xs font-medium">
-              <li>微博：@锵稿</li>
+              <li>微博：@枪稿</li>
             </ul>
           </div>
         </div>

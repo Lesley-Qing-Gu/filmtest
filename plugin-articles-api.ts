@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 export function articlesApi() {
   return {
@@ -42,32 +41,46 @@ export function articlesApi() {
         }
 
         const chunks: Buffer[] = [];
-        req.on('data', chunk => chunks.push(Buffer.from(chunk)));
+        req.on('data', (chunk: Buffer) => chunks.push(chunk));
         req.on('end', () => {
           const buffer = Buffer.concat(chunks);
-          // Parse multipart form data manually
-          const boundary = req.headers['content-type']?.split('boundary=')[1];
-          if (!boundary) {
+          const contentType = req.headers['content-type'] || '';
+          const boundaryMatch = contentType.match(/boundary=(.+)/);
+          if (!boundaryMatch) {
             res.statusCode = 400;
-            res.end(JSON.stringify({ error: 'No boundary' }));
+            res.end(JSON.stringify({ error: 'No boundary found' }));
             return;
           }
 
-          const parts = buffer.toString('binary').split('--' + boundary);
+          const boundary = boundaryMatch[1];
+          const boundaryBuffer = Buffer.from('--' + boundary);
+
+          // Find parts by splitting on boundary
+          const parts: Buffer[] = [];
+          let start = 0;
+          while (true) {
+            const idx = buffer.indexOf(boundaryBuffer, start);
+            if (idx === -1) break;
+            if (start > 0) {
+              // Remove leading \r\n and trailing \r\n from part
+              parts.push(buffer.slice(start, idx - 2));
+            }
+            start = idx + boundaryBuffer.length + 2; // skip boundary + \r\n
+          }
+
           for (const part of parts) {
-            const filenameMatch = part.match(/filename="(.+?)"/);
-            if (!filenameMatch) continue;
-
-            const originalName = filenameMatch[1];
-            const ext = path.extname(originalName);
-            const fileName = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + ext;
-
+            // Find header/body separator: \r\n\r\n
             const headerEnd = part.indexOf('\r\n\r\n');
             if (headerEnd === -1) continue;
 
-            const bodyStart = headerEnd + 4;
-            const bodyEnd = part.lastIndexOf('\r\n');
-            const fileData = Buffer.from(part.slice(bodyStart, bodyEnd), 'binary');
+            const header = part.slice(0, headerEnd).toString('utf-8');
+            const filenameMatch = header.match(/filename="(.+?)"/);
+            if (!filenameMatch) continue;
+
+            const originalName = filenameMatch[1];
+            const ext = path.extname(originalName).toLowerCase();
+            const fileName = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + ext;
+            const fileData = part.slice(headerEnd + 4);
 
             fs.writeFileSync(path.join(imagesDir, fileName), fileData);
 
@@ -77,7 +90,7 @@ export function articlesApi() {
           }
 
           res.statusCode = 400;
-          res.end(JSON.stringify({ error: 'No file found' }));
+          res.end(JSON.stringify({ error: 'No file found in upload' }));
         });
       });
 
