@@ -420,6 +420,7 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
   }, [showSource, editingId, isAdding]);
 
   const execCmd = (cmd: string, value?: string) => {
+    editorRef.current?.focus();
     document.execCommand(cmd, false, value);
     syncEditor();
   };
@@ -657,11 +658,11 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('italic'); }} className="px-3 py-1.5 text-xs italic font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="斜体">I</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('strikeThrough'); }} className="px-3 py-1.5 text-xs line-through font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="删除线">S</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
-                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', 'h1'); }} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题1">H1</button>
-                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', 'h2'); }} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题2">H2</button>
-                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', 'h3'); }} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题3">H3</button>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', '<h1>'); }} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题1">H1</button>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', '<h2>'); }} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题2">H2</button>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', '<h3>'); }} className="px-3 py-1.5 text-xs font-black text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="标题3">H3</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
-                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', 'blockquote'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="引用">“”</button>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', '<blockquote>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="引用">“”</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('insertHorizontalRule'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="分割线">—</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); const url = prompt('链接地址', 'https://'); if (url) execCmd('createLink', url); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="链接">🔗</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
@@ -671,6 +672,8 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('justifyLeft'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="左对齐">←</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('justifyCenter'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="居中">↔</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('justifyRight'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="右对齐">→</button>
+                    <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<p><br></p><p><br></p>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="空行">↵空行</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
                     <label className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg cursor-pointer" title="上传图片">
                       🖼️ 上传
