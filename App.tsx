@@ -646,7 +646,19 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                       <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
                       <button type="button" onClick={() => insertMarkdown('> ', '')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="引用">“”</button>
                       <button type="button" onClick={() => insertMarkdown('\n---\n', '')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="分割线">—</button>
-                      <button type="button" onClick={() => insertMarkdown('[', '](url)')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="链接">🔗</button>
+                      <button type="button" onClick={() => {
+                        const text = prompt('链接文字', '');
+                        const url = prompt('链接地址', 'https://');
+                        if (text && url) insertMarkdown(`[${text}](${url})`, '');
+                      }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="链接">🔗</button>
+                      <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                      <button type="button" onClick={() => insertMarkdown('- ', '')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="无序列表">•列表</button>
+                      <button type="button" onClick={() => insertMarkdown('1. ', '')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="有序列表">1.列表</button>
+                      <button type="button" onClick={() => insertMarkdown('\n| 标题1 | 标题2 | 标题3 |\n| --- | --- | --- |\n| ', ' | 内容 | 内容 |\n')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="表格">表格</button>
+                      <button type="button" onClick={() => insertMarkdown('```\n', '\n```')} className="hidden" title="代码块">&lt;/&gt;</button>
+                      <button type="button" onClick={() => insertMarkdown('<p style="text-align:left">', '</p>')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="左对齐">←</button>
+                      <button type="button" onClick={() => insertMarkdown('<p style="text-align:center">', '</p>')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="居中">↔</button>
+                      <button type="button" onClick={() => insertMarkdown('<p style="text-align:right">', '</p>')} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="右对齐">→</button>
                       <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
                       <label className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg cursor-pointer" title="上传图片">
                         🖼️ 上传
