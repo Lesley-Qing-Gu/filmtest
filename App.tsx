@@ -22,7 +22,10 @@ import {
   Layout,
   Save,
   X,
-  Settings
+  Settings,
+  Upload,
+  Image,
+  Copy
 } from 'lucide-react';
 
 // --- Types ---
@@ -36,6 +39,11 @@ interface Article {
   category: 'news' | 'festival' | 'texts' | 'interview';
   rating?: number;
   content?: string;
+}
+
+interface UploadedImage {
+  name: string;
+  url: string;
 }
 
 // --- Data ---
@@ -55,6 +63,20 @@ async function saveArticles(articles: Article[]) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(articles, null, 2)
   });
+}
+
+async function uploadImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch('/api/upload', { method: 'POST', body: formData });
+  const data = await res.json();
+  return data.url;
+}
+
+async function listImages(): Promise<UploadedImage[]> {
+  if (!isDev) return [];
+  const res = await fetch('/api/images');
+  return res.json();
 }
 
 // --- Components ---
@@ -363,6 +385,12 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
   const [previewMode, setPreviewMode] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [showImageLib, setShowImageLib] = useState(false);
+  const [imageLib, setImageLib] = useState<UploadedImage[]>([]);
+
+  useEffect(() => {
+    listImages().then(setImageLib);
+  }, []);
   const [formData, setFormData] = useState<Partial<Article>>({
     title: '',
     category: 'news',
@@ -479,7 +507,7 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                 <h3 className="text-3xl font-black uppercase text-[#E70012] border-b-2 border-[#E70012] pb-4">
                   {editingId ? 'Edit Article / 编辑文章' : 'Create Article / 创建文章'}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">文章类型 / Article Type</label>
                     <select 
@@ -502,6 +530,16 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                       className="w-full p-4 rounded-2xl border-2 border-[#E70012]/20 focus:border-[#E70012] outline-none font-bold text-[#E70012] bg-white transition-all"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">作者 / Author</label>
+                    <input 
+                      type="text" 
+                      placeholder="作者名"
+                      value={formData.author}
+                      onChange={(e) => setFormData({...formData, author: e.target.value})}
+                      className="w-full p-4 rounded-2xl border-2 border-[#E70012]/20 focus:border-[#E70012] outline-none font-bold text-[#E70012] bg-white transition-all"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -517,15 +555,33 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">封面图片 URL / Cover Image URL</label>
-                  <input 
-                    type="url" 
-                    placeholder="https://example.com/image.jpg"
-                    value={formData.imageUrl}
-                    onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
-                    className="w-full p-4 rounded-2xl border-2 border-[#E70012]/20 focus:border-[#E70012] outline-none font-bold text-[#E70012] bg-white transition-all"
-                    required
-                  />
+                  <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">封面图片 / Cover Image</label>
+                  <div className="flex gap-3">
+                    <input 
+                      type="text" 
+                      placeholder="输入URL 或 上传本地图片"
+                      value={formData.imageUrl}
+                      onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
+                      className="flex-1 p-4 rounded-2xl border-2 border-[#E70012]/20 focus:border-[#E70012] outline-none font-bold text-[#E70012] bg-white transition-all"
+                      required
+                    />
+                    <label className="flex items-center gap-2 px-6 py-4 bg-[#E70012] text-white rounded-2xl font-black uppercase text-xs tracking-widest cursor-pointer hover:scale-105 transition-transform">
+                      <Upload size={16} />
+                      上传
+                      <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const url = await uploadImage(file);
+                        setFormData({...formData, imageUrl: url});
+                        showToast('封面图片上传成功！');
+                      }} />
+                    </label>
+                  </div>
+                  {formData.imageUrl && (
+                    <div className="mt-3 w-40 h-28 rounded-xl overflow-hidden border-2 border-[#E70012]/20">
+                      <img src={formData.imageUrl} alt="封面预览" className="w-full h-full object-cover" />
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -543,15 +599,59 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <label className="text-xs font-black uppercase tracking-widest text-[#E70012]">内容正文 / Content (Markdown)</label>
-                    <button 
-                      type="button"
-                      onClick={() => setPreviewMode(!previewMode)}
-                      className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
-                    >
-                      {previewMode ? <Edit3 size={14} /> : <Eye size={14} />}
-                      {previewMode ? '编辑模式' : '预览模式'}
-                    </button>
+                    <div className="flex items-center gap-4">
+                      <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline cursor-pointer">
+                        <Image size={14} />
+                        插入图片
+                        <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const url = await uploadImage(file);
+                          setFormData({...formData, content: (formData.content || '') + `\n![${file.name}](${url})\n`});
+                          showToast('图片已插入正文！');
+                        }} />
+                      </label>
+                      <button 
+                        type="button"
+                        onClick={() => setShowImageLib(!showImageLib)}
+                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
+                      >
+                        <Copy size={14} />
+                        图片库
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => setPreviewMode(!previewMode)}
+                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#E70012] hover:underline"
+                      >
+                        {previewMode ? <Edit3 size={14} /> : <Eye size={14} />}
+                        {previewMode ? '编辑模式' : '预览模式'}
+                      </button>
+                    </div>
                   </div>
+
+                  {showImageLib && (
+                    <div className="p-4 rounded-2xl border-2 border-[#E70012]/20 bg-white">
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="text-xs font-black uppercase tracking-widest text-[#E70012]">已上传图片 / Image Library</span>
+                        <button type="button" onClick={() => setShowImageLib(false)} className="text-[#E70012]"><X size={16} /></button>
+                      </div>
+                      {imageLib.length === 0 ? (
+                        <p className="text-sm text-[#E70012]/50">暂无图片，请先上传</p>
+                      ) : (
+                        <div className="grid grid-cols-4 md:grid-cols-6 gap-3 max-h-48 overflow-y-auto">
+                          {imageLib.map(img => (
+                            <div key={img.name} className="relative group cursor-pointer" onClick={() => {
+                              setFormData({...formData, content: (formData.content || '') + `\n![${img.name}](${img.url})\n`});
+                              showToast('图片已插入正文！');
+                            }}>
+                              <img src={img.url} alt={img.name} className="w-full aspect-square object-cover rounded-lg border-2 border-transparent group-hover:border-[#E70012] transition-all" />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
                   
                   {previewMode ? (
                     <div className="w-full p-8 rounded-2xl border-2 border-[#E70012]/20 bg-white min-h-[300px] prose prose-red max-w-none prose-headings:text-[#E70012] prose-p:text-[#E70012]/80">
