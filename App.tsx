@@ -206,7 +206,7 @@ const SectionHeader = ({ title, subtitle, onAction }: { title: string, subtitle:
     {onAction && (
       <button 
         onClick={onAction}
-        className="flex items-center gap-2 bg-[#E70012] text-white px-6 py-3 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform"
+        className="flex items-center gap-2 bg-[#E70012] text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform w-auto self-start"
       >
         查看全部 <ChevronRight size={16} />
       </button>
