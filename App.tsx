@@ -196,7 +196,7 @@ const ArticleCard: React.FC<{ article: Article, onClick: () => void }> = ({ arti
 };
 
 const SectionHeader = ({ title, subtitle, onAction }: { title: string, subtitle: string, icon?: any, onAction?: () => void }) => (
-  <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+  <div className="mb-8 flex items-center justify-between gap-4">
     <div className="space-y-2">
       <div className="flex items-center gap-3 text-[#E70012]">
         <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter brutalist-font">{title}</h2>
