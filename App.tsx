@@ -819,7 +819,7 @@ const ContactSection = () => (
       <p className="text-base md:text-xl text-[#E70012]/70 font-bold max-w-2xl mx-auto">
         关于编辑垂询、合作请求或电影交流，欢迎随时联系。
       </p>
-      <a href="mailto:hello@cineround.com" className="inline-block px-6 py-3 bg-[#E70012] text-white rounded-full font-black text-xs tracking-widest hover:scale-105 transition-transform">
+      <a href="mailto:lesleygujiji@gmail.com" className="inline-block px-6 py-3 bg-[#E70012] text-white rounded-full font-black text-xs tracking-widest hover:scale-105 transition-transform">
         发送邮件
       </a>
     </div>
