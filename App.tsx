@@ -319,11 +319,16 @@ const TextsSection = ({ articles, onArticleClick, onAction }: { articles: Articl
 
 const InterviewSection = ({ articles, onArticleClick, onAction }: { articles: Article[], onArticleClick: (a: Article) => void, onAction?: () => void }) => (
   <section className="pt-32 pb-24 px-6 md:px-20 bg-[#E70012] text-white">
-    <div className="mb-8">
-      <div className="flex items-center gap-3 mb-4">
-        <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter brutalist-font">访谈</h2>
-      </div>
-      <p className="text-lg opacity-80 font-bold max-w-xl"></p>
+    <div className="mb-8 flex items-center justify-between gap-4">
+      <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter brutalist-font">访谈</h2>
+      {onAction && (
+        <button 
+          onClick={onAction}
+          className="flex items-center gap-2 bg-white text-[#E70012] px-4 py-2 md:px-6 md:py-3 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform w-auto"
+        >
+          查看全部 <ChevronRight size={16} />
+        </button>
+      )}
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
       {articles.filter(a => a.category === 'interview').map(article => (
@@ -822,7 +827,7 @@ const ContactSection = () => (
 );
 
 const Footer = ({ onNavigate }: { onNavigate: (path: string) => void }) => (
-  <footer className="py-24 px-6 md:px-20 bg-white text-[#E70012] border-t-8 border-[#E70012]">
+  <footer className="py-24 px-6 md:px-20 bg-white text-[#E70012] border-t-4 border-[#E70012]">
     <div className="flex flex-col md:flex-row justify-between items-center gap-24">
       <div className="space-y-8 max-w-lg">
         <div className="flex items-center gap-3">
