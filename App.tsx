@@ -125,7 +125,7 @@ const Navbar = ({ onNavigate, activePath }: { onNavigate: (path: string) => void
 
 const Hero = () => {
   return (
-    <section className="min-h-[70vh] flex flex-col justify-center pt-64 pb-32 px-6 md:px-20 border-b-4 border-[#E70012] bg-white">
+    <section className="min-h-[70vh] flex flex-col justify-center pt-64 pb-32 px-6 md:px-20 bg-white">
       <div className="max-w-6xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -258,7 +258,7 @@ const ArticlePage = ({ article, onBack }: { article: Article, onBack: () => void
 );
 
 const NewsSection = ({ articles, onArticleClick, onAction }: { articles: Article[], onArticleClick: (a: Article) => void, onAction?: () => void }) => (
-  <section className="pt-32 pb-24 px-6 md:px-20 bg-white border-b-4 border-[#E70012]">
+  <section className="pt-32 pb-24 px-6 md:px-20 bg-white">
     <SectionHeader 
       title="最新资讯" 
       subtitle="" 
@@ -274,7 +274,7 @@ const NewsSection = ({ articles, onArticleClick, onAction }: { articles: Article
 );
 
 const FestivalSection = ({ articles, onArticleClick, onAction }: { articles: Article[], onArticleClick: (a: Article) => void, onAction?: () => void }) => (
-  <section className="pt-32 pb-24 px-6 md:px-20 bg-[#E70012]/5 border-b-4 border-[#E70012]">
+  <section className="pt-32 pb-24 px-6 md:px-20 bg-[#E70012]/5">
     <SectionHeader 
       title="电影节报道" 
       subtitle="" 
@@ -290,7 +290,7 @@ const FestivalSection = ({ articles, onArticleClick, onAction }: { articles: Art
 );
 
 const TextsSection = ({ articles, onArticleClick, onAction }: { articles: Article[], onArticleClick: (a: Article) => void, onAction?: () => void }) => (
-  <section className="pt-32 pb-24 px-6 md:px-20 bg-white border-b-4 border-[#E70012]">
+  <section className="pt-32 pb-24 px-6 md:px-20 bg-white">
     <SectionHeader 
       title="深度文章" 
       subtitle="" 
