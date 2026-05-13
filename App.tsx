@@ -673,8 +673,6 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('justifyCenter'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="居中">↔</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); execCmd('justifyRight'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="右对齐">→</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
-                    <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<br>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="换行">↵换行</button>
-                    <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<p><br></p>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="空行">↵空行</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
                     <button type="button" onMouseDown={e => { e.preventDefault(); const color = prompt('输入颜色值(如 red, #333, rgb(0,0,255))', '#E70012'); if (color) execCmd('foreColor', color); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="文字颜色">🎨字色</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
