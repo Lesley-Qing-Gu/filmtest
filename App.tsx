@@ -806,20 +806,17 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
 
 const ContactSection = () => (
   <section className="pt-32 pb-32 px-6 md:px-20 text-center bg-white">
-    <div className="max-w-4xl mx-auto space-y-12">
+    <div className="max-w-4xl mx-auto space-y-8">
       <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-8">
         <img src={import.meta.env.BASE_URL + 'logo.jpg'} alt="Logo" className="w-full h-full object-cover" />
       </div>
-      <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-[#E70012] brutalist-font">联系我们</h2>
-      <p className="text-xl md:text-2xl text-[#E70012]/70 font-bold max-w-2xl mx-auto">
+      <h2 className="text-2xl md:text-4xl font-black text-[#E70012] brutalist-font">联系我们</h2>
+      <p className="text-base md:text-xl text-[#E70012]/70 font-bold max-w-2xl mx-auto">
         关于编辑垂询、合作请求或电影交流，欢迎随时联系。
       </p>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-        <a href="mailto:hello@cineround.com" className="w-full md:w-auto px-6 py-3 bg-[#E70012] text-white rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform">
-          发送邮件
-        </a>
-
-      </div>
+      <a href="mailto:hello@cineround.com" className="inline-block px-6 py-3 bg-[#E70012] text-white rounded-full font-black text-xs tracking-widest hover:scale-105 transition-transform">
+        发送邮件
+      </a>
     </div>
   </section>
 );
