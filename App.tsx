@@ -676,6 +676,11 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
                     <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<br>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="换行">↵换行</button>
                     <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<p><br></p>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="空行">↵空行</button>
                     <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); const color = prompt('输入颜色值(如 red, #333, rgb(0,0,255))', '#E70012'); if (color) execCmd('foreColor', color); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="文字颜色">🎨字色</button>
+                    <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><div><p>第一列</p></div><div><p>第二列</p></div></div>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="两列布局">2列</button>
+                    <button type="button" onMouseDown={e => { e.preventDefault(); insertHtmlAtCursor('<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px"><div><p>第一列</p></div><div><p>第二列</p></div><div><p>第三列</p></div></div>'); }} className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg" title="三列布局">3列</button>
+                    <span className="w-px h-5 bg-[#E70012]/20 mx-1"></span>
                     <label className="px-3 py-1.5 text-xs font-bold text-[#E70012] hover:bg-[#E70012]/10 rounded-lg cursor-pointer" title="上传图片">
                       🖼️ 上传
                       <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
