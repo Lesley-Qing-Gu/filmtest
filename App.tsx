@@ -354,7 +354,7 @@ const AdminGate = (props: { articles: Article[], onAdd: (a: Article) => void, on
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'bage') {
+    if (password === (import.meta.env.VITE_ADMIN_PASSWORD || '')) {
       setAuthenticated(true);
       setError(false);
     } else {
