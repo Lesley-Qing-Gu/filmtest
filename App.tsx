@@ -519,14 +519,14 @@ const AdminDashboard = ({ articles, onAdd, onDelete, onUpdate, onNavigate }: { a
           <div className="flex items-center gap-4">
             <button 
               onClick={() => onNavigate('home')}
-              className="flex items-center gap-2 border-4 border-[#E70012] text-[#E70012] px-8 py-4 rounded-full font-black uppercase text-sm tracking-widest hover:bg-[#E70012] hover:text-white transition-all shadow-lg"
+              className="flex items-center gap-2 border-4 border-[#E70012] text-[#E70012] px-8 py-4 rounded-full font-black uppercase text-sm tracking-widest hover:bg-[#E70012] hover:text-white transition-all"
             >
               <ArrowRight className="rotate-180" size={20} />
               返回首页
             </button>
             <button 
               onClick={() => isAdding ? cancelAction() : setIsAdding(true)}
-              className="flex items-center gap-2 bg-[#E70012] text-white px-8 py-4 rounded-full font-black uppercase text-sm tracking-widest hover:scale-105 transition-transform shadow-xl"
+              className="flex items-center gap-2 bg-[#E70012] text-white px-8 py-4 rounded-full font-black uppercase text-sm tracking-widest hover:scale-105 transition-transform"
             >
               {isAdding ? <X size={20} /> : <Plus size={20} />}
               {isAdding ? '取消' : '新建文章'}
